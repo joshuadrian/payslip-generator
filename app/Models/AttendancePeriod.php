@@ -2,13 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\UnlockedScope;
 use App\Traits\Models\GeneratesUid;
 use App\Traits\Models\TrackUser;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ScopedBy(UnlockedScope::class)]
 class AttendancePeriod extends Model
 {
-    use GeneratesUid, TrackUser;
+    use SoftDeletes, GeneratesUid, TrackUser;
 
     protected $fillable = ['start_date', 'end_date'];
 
@@ -19,5 +24,10 @@ class AttendancePeriod extends Model
             'end_date' => 'date',
             'is_locked' => 'boolean',
         ];
+    }
+
+    public function scopeWithLocked(Builder $query)
+    {
+        $query->withoutGlobalScope(UnlockedScope::class);
     }
 }
