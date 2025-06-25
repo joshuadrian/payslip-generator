@@ -6,7 +6,6 @@ use App\Exceptions\AuthException;
 use App\Traits\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -15,6 +14,14 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     use ApiResponse;
+
+    /**
+     * Authenticate
+     *
+     * Get user's token for authentication
+     *
+     * @unauthenticated
+     */
 
     public function authenticate(Request $request)
     {
@@ -32,11 +39,11 @@ class AuthController extends Controller
 
             $token = $user->createToken('api-token')->plainTextToken;
 
-            return $this->success(['token' => $token]);
+            return $this->success('Authenticated', ['token' => $token], 200);
         } catch (ValidationException $e) {
             return $this->error('Unprocessable Entity', $e->errors(), 422);
         } catch (AuthException $e) {
-            return $this->error($e->getMessage(), [], $e->getCode());
+            return $this->error($e->getMessage(), [], 401);
         } catch (\Throwable $th) {
             Log::error($th);
             return $this->error('Internal server error', [], 500);

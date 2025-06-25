@@ -5,48 +5,48 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-test('failed validation checks', function () {
-    $response = $this->post('/api/v1/auth', [
-        'usernames' => 'test',
-        'passwords' => 'password'
+test('fail on validation checks', function () {
+    $response = $this->postJson('/api/v1/auth', [
+        'wrong' => 'wrong',
+        'wrong' => 'wrong'
     ]);
 
     $response->assertStatus(422);
 });
 
-test('user fail to authenticate with wrong username', function () {
+test('fail to authenticate with wrong username', function () {
     $user = User::factory()->create();
-    $response = $this->post('/api/v1/auth', [
-        'username' => 'test',
+    $response = $this->postJson('/api/v1/auth', [
+        'username' => 'wrong',
         'password' => $user->password
     ]);
 
     $response->assertStatus(401);
 });
 
-test('user fail to authenticate with wrong password', function () {
+test('fail to authenticate with wrong password', function () {
     $user = User::factory()->create();
-    $response = $this->post('/api/v1/auth', [
+    $response = $this->postJson('/api/v1/auth', [
         'username' => $user->username,
-        'password' => 'test'
+        'password' => 'wrong'
     ]);
 
     $response->assertStatus(401);
 });
 
-test('user fail to authenticate with wrong username and password', function () {
+test('fail to authenticate with wrong username and password', function () {
     User::factory()->create();
-    $response = $this->post('/api/v1/auth', [
-        'username' => 'test',
-        'password' => 'test'
+    $response = $this->postJson('/api/v1/auth', [
+        'username' => 'wrong',
+        'password' => 'wrong'
     ]);
 
     $response->assertStatus(401);
 });
 
-test('user can authenticate', function () {
+test('successfully authenticated', function () {
     $user = User::factory()->create();
-    $response = $this->post('/api/v1/auth', [
+    $response = $this->postJson('/api/v1/auth', [
         'username' => $user->username,
         'password' => 'password'
     ]);
