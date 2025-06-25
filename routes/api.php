@@ -8,6 +8,6 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::post('/auth', [AuthController::class, 'authenticate']);
 
     Route::middleware('auth:sanctum')->group(function () {
-        // Route::apiResource('attendance-periods', AttendancePeriodController::class);
+        Route::apiResource('attendance-periods', AttendancePeriodController::class);
     });
 });
