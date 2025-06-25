@@ -37,6 +37,17 @@ class AuthController extends Controller
 
             $token = $user->createToken('api-token')->plainTextToken;
 
+            /**
+             * Success
+             *
+             * @body array{
+             *      status:'success',
+             *      message: Authenticated,
+             *      data: array{
+             *          token: string
+             *      }
+             *  }
+             */
             return $this->success('Authenticated', ['token' => $token], 200);
         } catch (ValidationException $e) {
             return $this->error('Unprocessable Entity', $e->errors(), 422);
