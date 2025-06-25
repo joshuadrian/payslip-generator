@@ -16,7 +16,8 @@ class Salary extends Model
     protected function casts(): array
     {
         return [
-            'salary' => 'decimal:2'
+            'salary' => 'decimal:2',
+            'effective_date' => 'date',
         ];
     }
 }
