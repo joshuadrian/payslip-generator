@@ -32,11 +32,11 @@ class RolePermissionSeeder extends Seeder
         $roles = [
             [
                 'role' => ['name' => 'Admin'],
-                // 'permissions' => [
-                //     'create attendance period',
-                //     'create payroll',
-                //     'create payslip summary',
-                // ]
+                'permissions' => [
+                    'create attendance period',
+                    'create payroll',
+                    'create payslip summary',
+                ]
             ],
             [
                 'role' => ['name' => 'Employee'],
