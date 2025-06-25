@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('salaries', function (Blueprint $table) {
             $table->id();
-            $table->string('uid', 7);
+            $table->string('uid', 7)->unique();
             $table->foreignId('user_id')->constrained();
             $table->decimal('salary', 15, 2);
             $table->timestamps();
