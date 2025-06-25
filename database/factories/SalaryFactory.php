@@ -16,8 +16,11 @@ class SalaryFactory extends Factory
      */
     public function definition(): array
     {
+        $date = fake()->dateTimeBetween('2024-01-01 00:00:00', '2024-01-31 00:00:00');
+
         return [
-            'salary' => rand(1, 100) * 1000000,
+            'monthly_salary' => rand(1, 100) * 1000000,
+            'effective_date' => $date,
         ];
     }
 }
