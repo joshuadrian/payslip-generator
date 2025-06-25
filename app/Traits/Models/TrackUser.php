@@ -17,8 +17,8 @@ trait TrackUser
             $model->updated_by = auth()->id();
         });
 
-        static::deleting(function ($model)) {
+        static::deleting(function ($model) {
             $model->deleted_by = auth()->id();
-        }
+        });
     }
 }
