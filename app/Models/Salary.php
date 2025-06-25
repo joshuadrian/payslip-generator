@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use GeneratesUid;
+use App\Traits\GeneratesUid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
