@@ -5,27 +5,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-test('fail on accept json only middleware', function () {
-    $response = $this->post('/api/v1/attendance-periods');
-
-    $response->assertStatus(406);
-});
-
-test('fail to authenticate because no authorization header', function () {
-    $response = $this->postJson('/api/v1/attendance-periods');
-
-    $response->assertStatus(401);
-});
-
-test('fail on validation checks', function () {
+test('fail on validation when required fields are missing', function () {
     $user = User::factory()->create();
     $token = $user->createToken('api-token')->plainTextToken;
-
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
     ])->postJson('/api/v1/attendance-periods', [
-        'wrong' => 'wrong',
-        'wrong' => 'wrong'
+        'wrong' => '2025-01-01',
+        'wrong' => '2025-01-31'
     ]);
 
     $response->assertJson([

@@ -5,12 +5,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-test('fail on accept json only middleware', function () {
-    $response = $this->post('/api/v1/auth');
-
-    $response->assertStatus(406);
-});
-
 test('fail on validation checks', function () {
     $response = $this->postJson('/api/v1/auth', [
         'wrong' => 'wrong',

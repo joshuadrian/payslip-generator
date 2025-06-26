@@ -16,17 +16,22 @@ class SettingSeeder extends Seeder
         $settings = [
             [
                 'name' => 'shift_start',
-                'value' => '08:00',
+                'value' => '09:00',
                 'type' => 'time'
             ],
             [
                 'name' => 'shift_end',
-                'value' => '09:00',
+                'value' => '17:00',
                 'type' => 'time'
             ],
             [
                 'name' => 'overtime_multiplier',
                 'value' => '2',
+                'type' => 'float'
+            ],
+            [
+                'name' => 'max_overtime_duration',
+                'value' => '3',
                 'type' => 'float'
             ],
         ];

@@ -41,11 +41,7 @@ class AttendancePeriodController extends Controller
              *      data: AttendancePeriod
              *  }
              */
-            return $this->success(
-                'Successfully created new attendance period',
-                $ap->toResource(AttendancePeriodResource::class),
-                200
-            );
+            return $this->success('Successfully created new attendance period', $ap, 200);
         } catch (UniqueConstraintViolationException $e) {
             return $this->error('Attendance period already exist', [], 409);
         } catch (ValidationException $e) {

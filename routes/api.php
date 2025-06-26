@@ -16,6 +16,6 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
         Route::post('attendances/submit', [AttendanceController::class, 'submit']);
 
-        // Route::post('overtimes/')
+        Route::post('overtimes', [OvertimeController::class, 'store']);
     });
 });

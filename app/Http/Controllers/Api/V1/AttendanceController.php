@@ -31,7 +31,7 @@ class AttendanceController extends Controller
              * @body array{
              *      status:'success',
              *      message: 'Successfully checked in for today',
-             *      data: array<Attendance>
+             *      data: array<App\Models\Attendance>
              *  }
              */
             return $this->success("Successfully checked in for today", $att, 200);

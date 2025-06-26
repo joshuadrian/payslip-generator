@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        activity()->disableLogging();
+        
         $this->call([RolePermissionSeeder::class, SettingSeeder::class]);
 
         User::factory(1)
@@ -22,5 +24,7 @@ class DatabaseSeeder extends Seeder
             ->hasSalaries(1)
             ->employee()
             ->create();
+
+        activity()->enableLogging();
     }
 }
