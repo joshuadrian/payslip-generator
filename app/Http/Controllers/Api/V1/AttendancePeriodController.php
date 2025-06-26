@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Exceptions\UniqueAttendancePeriodException;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\V1\AttendancePeriodResource;
 use App\Models\AttendancePeriod;
 use App\Services\AttendancePeriodService;
 use App\Traits\ApiResponse;
@@ -16,7 +17,7 @@ class AttendancePeriodController extends Controller
 {
     use ApiResponse;
     /**
-     * Store a newly created resource in storage.
+     * Create attendance period
      */
     public function store(Request $request, AttendancePeriodService $service)
     {
@@ -27,15 +28,9 @@ class AttendancePeriodController extends Controller
 
         $ap = $service->store($request);
 
-        /**
-         * Success
-         *
-         * @body array{
-         *      status:'success',
-         *      message: 'Successfully created new attendance period.',
-         *      data: AttendancePeriod
-         *  }
-         */
-        return $this->success('Successfully created new attendance period.', $ap, 201);
+        return AttendancePeriodResource::make($ap)->additional([
+            'status' => 'success',
+            'message' => 'Successfully created new attendance period.'
+        ])->response()->setStatusCode(201);
     }
 }

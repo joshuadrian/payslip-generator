@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\V1\OvertimeResource;
 use App\Models\Setting;
 use App\Services\OvertimeService;
 use App\Traits\ApiResponse;
@@ -14,7 +15,7 @@ class OvertimeController extends Controller
     use ApiResponse;
 
     /**
-     * Store a newly created resource in storage.
+     * Create overtime
      */
     public function store(Request $request, OvertimeService $service)
     {
@@ -25,15 +26,9 @@ class OvertimeController extends Controller
         ]);
         $ovt = $service->store(Auth::user(), $request);
 
-        /**
-         * Success
-         *
-         * @body array{
-         *      status:'success',
-         *      message: 'Successfully submitted overtime for today.',
-         *      data: array<App\Models\Overtime>
-         *  }
-         */
-        return $this->success("Successfully submitted overtime for today.", $ovt, 201);
+        return OvertimeResource::make($ovt)->additional([
+            'status' => 'success',
+            'message' => 'Successfully submitted overtime for today.'
+        ])->response()->setStatusCode(201);
     }
 }

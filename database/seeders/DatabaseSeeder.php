@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AttendancePeriod;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -13,8 +14,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         activity()->disableLogging();
-        
+
         $this->call([RolePermissionSeeder::class, SettingSeeder::class]);
+
+        AttendancePeriod::create([
+            'start_date' => now()->startOfMonth(),
+            'end_date' => now()->endOfMonth(),
+        ]);
 
         User::factory(1)
             ->admin()
