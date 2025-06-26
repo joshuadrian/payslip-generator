@@ -24,3 +24,8 @@ test('fail on overtimes routes', function () {
     $response = $this->post("/api/v1/overtimes");
     $response->assertStatus(406);
 });
+
+test('fail on reimbursements routes', function () {
+    $response = $this->post("/api/v1/reimbursements");
+    $response->assertStatus(406);
+});

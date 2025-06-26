@@ -36,3 +36,14 @@ test('fail on overtimes route', function () {
 
     $response->assertStatus(403);
 });
+
+// Reimbursements
+test('fail on reimbursements route', function () {
+    $user = User::factory()->create();
+    $token = $user->createToken('api-token')->plainTextToken;
+    $response = $this->withHeaders([
+        'Authorization' => "Bearer $token"
+    ])->postJson("/api/v1/reimbursements");
+
+    $response->assertStatus(403);
+});

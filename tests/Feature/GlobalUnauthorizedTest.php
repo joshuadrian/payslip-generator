@@ -38,3 +38,15 @@ test('fail on overtimes route', function () {
 
     $response->assertStatus(401);
 });
+
+// Reimbursements
+test('fail on reimbursements route', function () {
+    $response = $this->postJson("/api/v1/reimbursements");
+    $response->assertStatus(401);
+
+    $response = $this->withHeaders([
+        'Authorization' => "Bearer wrong"
+    ])->postJson("/api/v1/reimbursements");
+
+    $response->assertStatus(401);
+});
