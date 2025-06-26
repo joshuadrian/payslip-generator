@@ -1,14 +1,14 @@
 <?php
 
+use App\Exceptions\MyException;
 use App\Http\Middleware\JsonOnlyMiddleware;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -23,31 +23,50 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-            if ($request->is('api/*')) {
-                return response()->json(['status' => 'error', 'message' => 'Not found'], 404);
-            }
-        });
-
         $exceptions->render(function (AuthenticationException $e, Request $request) {
             if ($request->is('api/*')) {
-                return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 401);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Unauthorized'
+                ], 401);
             }
         });
 
-        $exceptions->render(function (AccessDeniedHttpException $e, Request $request) {
+        $exceptions->render(function (HttpException $e, Request $request) {
             if ($request->is('api/*')) {
-                return response()->json(['status' => 'error', 'message' => 'Forbidden'], 403);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $e->getMessage()
+                ], $e->getStatusCode());
+            }
+        });
+
+        $exceptions->render(function (ValidationException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'status' => '',
+                    'message' => 'Unprocessable entity.',
+                    'errors' => $e->errors()
+                ], 422);
+            }
+        });
+
+        $exceptions->dontReport(MyException::class);
+        $exceptions->render(function (MyException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $e->getMessage()
+                ], $e->getCode());
             }
         });
 
         $exceptions->render(function (Throwable $e, Request $request) {
             if ($request->is('api/*')) {
-                $status = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
-
-                if ($status >= 500) {
-                    return response()->json(['status' => 'error', 'message' => 'Internal servier error'], 500);
-                }
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Internal server error.'
+                ], 500);
             }
         });
     })->create();

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\AttendancePeriod;
 use App\Models\User;
 use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,9 +33,7 @@ test('fail to create because same data already exists', function () {
     $user = User::factory()->admin()->create();
     $token = $user->createToken('api-token')->plainTextToken;
 
-    $response = $this->withHeaders([
-        'Authorization' => "Bearer $token"
-    ])->postJson('/api/v1/attendance-periods', [
+    AttendancePeriod::create([
         'start_date' => '2025-01-01',
         'end_date' => '2025-01-31'
     ]);
@@ -60,5 +59,5 @@ test('successfully created attendance period', function () {
         'end_date' => '2025-01-31'
     ]);
 
-    $response->assertStatus(200);
+    $response->assertStatus(201);
 });

@@ -18,6 +18,6 @@ class UserController extends Controller
      */
     public function index()
     {
-        return $this->success('Fetched users data', User::limit(5)->get(), 200);
+        return $this->success('Successfully fetched users data.', User::limit(5)->get(), 200);
     }
 }

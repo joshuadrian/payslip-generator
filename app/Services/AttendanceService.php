@@ -13,6 +13,7 @@ class AttendanceService
 {
     public function checkInOrOut(User $user)
     {
+        $statusCode = 201;
         $date = now()->startOfDay();
         $formattedDate = $date->format('Y-m-d');
 
@@ -35,12 +36,13 @@ class AttendanceService
                 'attendance_period_id' => $period->id
             ])->refresh();
         } else if (empty($prevAtt->checked_out_at)) {
+            $statusCode = 200;
             $prevAtt->update(['checked_out_at' => now()]);
             $att = $prevAtt->refresh();
         } else {
             throw new AttendanceCheckedOutException;
         }
 
-        return $att;
+        return [$att, $statusCode];
     }
 }

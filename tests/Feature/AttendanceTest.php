@@ -19,8 +19,8 @@ test('fail on missing attendance period existence', function () {
         'Authorization' => "Bearer $token"
     ])->postJson("/api/v1/attendances/submit");
 
-    $response->assertJson(['message' => "Attendance period doesn't exists for today"]);
-    $response->assertStatus(422);
+    $response->assertJson(['message' => "Attendance period doesn't exists for today."]);
+    $response->assertStatus(409);
 });
 
 test('fail on checking in on weekends', function () {
@@ -38,7 +38,7 @@ test('fail on checking in on weekends', function () {
         'Authorization' => "Bearer $token"
     ])->postJson("/api/v1/attendances/submit");
 
-    $response->assertJson(['message' => 'Check in or check out cannot be done in weekends']);
+    $response->assertJson(['message' => 'Check in or check out cannot be done in weekends.']);
     $response->assertStatus(422);
 });
 
@@ -57,7 +57,7 @@ test('successfully checked in', function () {
         'Authorization' => "Bearer $token"
     ])->postJson("/api/v1/attendances/submit");
 
-    $response->assertStatus(200);
+    $response->assertStatus(201);
 });
 
 test('successfully checked out', function () {
@@ -75,7 +75,7 @@ test('successfully checked out', function () {
         'Authorization' => "Bearer $token"
     ])->postJson("/api/v1/attendances/submit");
 
-    $response->assertStatus(200);
+    $response->assertStatus(201);
 
     Carbon::setTestNow(now()->startOfWeek()->startOfDay()->addHour(7));
 

@@ -4,11 +4,11 @@ namespace App\Exceptions;
 
 use Exception;
 
-class OvertimeSubmittedException extends Exception
+class OvertimeSubmittedException extends MyException
 {
 
     public function __construct()
     {
-        parent::__construct("You have already submitted an overtime for today", 409);
+        parent::__construct("You have already submitted an overtime for today.", 409);
     }
 }

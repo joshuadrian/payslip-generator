@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Exceptions\UniqueAttendancePeriodException;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\AttendancePeriodResource;
 use App\Models\AttendancePeriod;
 use App\Traits\ApiResponse;
+use Carbon\Carbon;
 use Dedoc\Scramble\Attributes\Group;
-use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\ValidationException;
 
 #[Group('Attendance Period')]
 class AttendancePeriodController extends Controller
@@ -21,34 +19,34 @@ class AttendancePeriodController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $request->validate([
-                'start_date' => 'required|date_format:Y-m-d',
-                'end_date' => 'required|date_format:Y-m-d',
-            ]);
+        $request->validate([
+            'start_date' => 'required|date_format:Y-m-d',
+            'end_date' => 'required|date_format:Y-m-d',
+        ]);
 
-            $ap = AttendancePeriod::create([
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-            ])->refresh();
+        $prevAp = AttendancePeriod::where([
+            ['start_date', Carbon::parse($request->start_date)->startOfDay()],
+            ['end_date', Carbon::parse($request->end_date)->startOfDay()]
+        ])->count();
 
-            /**
-             * Success
-             *
-             * @body array{
-             *      status:'success',
-             *      message: 'Successfully created new attendance period',
-             *      data: AttendancePeriod
-             *  }
-             */
-            return $this->success('Successfully created new attendance period', $ap, 200);
-        } catch (UniqueConstraintViolationException $e) {
-            return $this->error('Attendance period already exist', [], 409);
-        } catch (ValidationException $e) {
-            return $this->error('Unprocessable Entity', $e->errors(), 422);
-        } catch (\Throwable $th) {
-            Log::error($th);
-            return $this->error('Internal server error', [], 500);
+        if ($prevAp > 0) {
+            throw new UniqueAttendancePeriodException;
         }
+
+        $ap = AttendancePeriod::create([
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+        ])->refresh();
+
+        /**
+         * Success
+         *
+         * @body array{
+         *      status:'success',
+         *      message: 'Successfully created new attendance period.',
+         *      data: AttendancePeriod
+         *  }
+         */
+        return $this->success('Successfully created new attendance period.', $ap, 201);
     }
 }
