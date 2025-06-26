@@ -11,7 +11,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Attendance extends Model
 {
-    use SoftDeletes, GeneratesUid, TrackUser, LogsActivity;
+    use SoftDeletes, LogsActivity, GeneratesUid, TrackUser;
 
     protected $fillable = ['user_id', 'date', 'attendance_period_id', 'checked_out_at'];
 
