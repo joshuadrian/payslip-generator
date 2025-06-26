@@ -17,26 +17,6 @@ class AttendancePeriodController extends Controller
 {
     use ApiResponse;
     /**
-     *
-     * Display a listing of the resource.
-     */
-    public function index(Request $reqest)
-    {
-        $ap = AttendancePeriod::all();
-
-        /**
-         * Success
-         *
-         * @body array{
-         *      status:'success',
-         *      message: 'Successfully fetched attendance period data',
-         *      data: array<AttendancePeriod>
-         *  }
-         */
-        return $this->success('Successfully fetched attendance period data', $ap, 200);
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
