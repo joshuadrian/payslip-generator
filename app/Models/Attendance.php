@@ -18,7 +18,9 @@ class Attendance extends Model
     protected static function booted()
     {
         static::creating(function ($model) {
-            $model->checked_in_at = now();
+            if (empty($model->checked_in_at)) {
+                $model->checked_in_at = now();
+            }
         });
     }
 

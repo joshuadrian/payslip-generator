@@ -65,4 +65,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Salary::class);
     }
+
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    public function reimbursements(): HasMany
+    {
+        return $this->hasMany(Reimbursement::class);
+    }
+
+    public function overtimes(): HasMany
+    {
+        return $this->hasMany(Overtime::class);
+    }
 }
