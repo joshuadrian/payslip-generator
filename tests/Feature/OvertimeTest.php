@@ -2,14 +2,18 @@
 
 use App\Models\User;
 use Carbon\Carbon;
+use Database\Seeders\RolePermissionSeeder;
 use Database\Seeders\SettingSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
+beforeEach(function () {
+    $this->seed(RolePermissionSeeder::class);
+    $this->seed(SettingSeeder::class);
+});
 
 test('fail on validation when required fields are missing', function () {
-    $this->seed(SettingSeeder::class);
-    $user = User::factory()->create();
+    $user = User::factory()->employee()->create();
     $token = $user->createToken('api-token')->plainTextToken;
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
@@ -23,8 +27,7 @@ test('fail on validation when required fields are missing', function () {
 
 test('fail on validation when duration is under the requirements', function () {
     Carbon::setTestNow(now()->startOfDay()->setHour(17));
-    $this->seed(SettingSeeder::class);
-    $user = User::factory()->create();
+    $user = User::factory()->employee()->create();
     $token = $user->createToken('api-token')->plainTextToken;
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
@@ -38,8 +41,7 @@ test('fail on validation when duration is under the requirements', function () {
 
 test('fail on validation when duration is above the requirements', function () {
     Carbon::setTestNow(now()->startOfDay()->setHour(17));
-    $this->seed(SettingSeeder::class);
-    $user = User::factory()->create();
+    $user = User::factory()->employee()->create();
     $token = $user->createToken('api-token')->plainTextToken;
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
@@ -53,8 +55,7 @@ test('fail on validation when duration is above the requirements', function () {
 
 test('successfully submitted overtime', function () {
     Carbon::setTestNow(now()->startOfDay()->setHour(17));
-    $this->seed(SettingSeeder::class);
-    $user = User::factory()->create();
+    $user = User::factory()->employee()->create();
     $token = $user->createToken('api-token')->plainTextToken;
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"

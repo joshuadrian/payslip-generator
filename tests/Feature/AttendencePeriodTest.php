@@ -1,12 +1,16 @@
 <?php
 
 use App\Models\User;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
+beforeEach(function () {
+    $this->seed(RolePermissionSeeder::class);
+});
 
 test('fail on validation when required fields are missing', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $token = $user->createToken('api-token')->plainTextToken;
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
@@ -25,7 +29,7 @@ test('fail on validation when required fields are missing', function () {
 });
 
 test('fail to create because same data already exists', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $token = $user->createToken('api-token')->plainTextToken;
 
     $response = $this->withHeaders([
@@ -46,7 +50,7 @@ test('fail to create because same data already exists', function () {
 });
 
 test('successfully created attendance period', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $token = $user->createToken('api-token')->plainTextToken;
 
     $response = $this->withHeaders([

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -15,7 +16,8 @@ test('fail on validation checks', function () {
 });
 
 test('fail to authenticate with wrong username', function () {
-    $user = User::factory()->create();
+    $this->seed(RolePermissionSeeder::class);
+    $user = User::factory()->employee()->create();
     $response = $this->postJson('/api/v1/auth', [
         'username' => 'wrong',
         'password' => $user->password
@@ -25,7 +27,8 @@ test('fail to authenticate with wrong username', function () {
 });
 
 test('fail to authenticate with wrong password', function () {
-    $user = User::factory()->create();
+    $this->seed(RolePermissionSeeder::class);
+    $user = User::factory()->employee()->create();
     $response = $this->postJson('/api/v1/auth', [
         'username' => $user->username,
         'password' => 'wrong'
@@ -45,7 +48,8 @@ test('fail to authenticate with wrong username and password', function () {
 });
 
 test('successfully authenticated', function () {
-    $user = User::factory()->create();
+    $this->seed(RolePermissionSeeder::class);
+    $user = User::factory()->employee()->create();
     $response = $this->postJson('/api/v1/auth', [
         'username' => $user->username,
         'password' => 'string'
