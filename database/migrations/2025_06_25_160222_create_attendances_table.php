@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attendance_periods', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->string('uid')->unique();
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->boolean('is_locked')->default(false);
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('attendance_period_id')->constrained();
+            $table->date('date');
+            $table->timestamp('checked_in_at');
+            $table->timestamp('checked_out_at')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->foreignId('deleted_by')->nullable()->constrained('users');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['start_date', 'end_date']);
+            $table->unique(['user_id', 'date']);
         });
     }
 
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendance_periods');
+        Schema::dropIfExists('attendances');
     }
 };

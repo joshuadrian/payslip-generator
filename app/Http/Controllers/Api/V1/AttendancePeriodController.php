@@ -7,12 +7,12 @@ use App\Http\Resources\V1\AttendancePeriodResource;
 use App\Models\AttendancePeriod;
 use App\Traits\ApiResponse;
 use Dedoc\Scramble\Attributes\Group;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 #[Group('Attendance Period')]
-
 class AttendancePeriodController extends Controller
 {
     use ApiResponse;
@@ -66,39 +66,13 @@ class AttendancePeriodController extends Controller
                 $ap->toResource(AttendancePeriodResource::class),
                 200
             );
+        } catch (UniqueConstraintViolationException $e) {
+            return $this->error('Attendance period already exist', [], 409);
         } catch (ValidationException $e) {
             return $this->error('Unprocessable Entity', $e->errors(), 422);
         } catch (\Throwable $th) {
             Log::error($th);
-
-            /**
-             * Internal server error
-             */
             return $this->error('Internal server error', [], 500);
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
-    // public function show(AttendancePeriod $attendancePeriod)
-    // {
-    //     //
-    // }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    // public function update(Request $request, AttendancePeriod $attendancePeriod)
-    // {
-    //     //
-    // }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    // public function destroy(AttendancePeriod $attendancePeriod)
-    // {
-    //     //
-    // }
 }
