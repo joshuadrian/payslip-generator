@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Str;
 use Dedoc\Scramble\Scramble;
+use Illuminate\Support\ServiceProvider;
+use Spatie\Activitylog\Models\Activity;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
-use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,5 +30,13 @@ class AppServiceProvider extends ServiceProvider
                     SecurityScheme::http('bearer')
                 );
             });
+
+        Activity::saving(function (Activity $activity) {
+            $requestId = request()->header('X-Request-ID') ?? Str::uuid()->toString();
+            $activity->properties = $activity->properties->merge([
+                'ip' => request()->ip(),
+                'request_id' => $requestId,
+            ]);
+        });
     }
 }

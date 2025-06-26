@@ -13,7 +13,8 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('attendance-periods', AttendancePeriodController::class);
+
         // Route::apiResource('attendances', AttendanceController::class);
-        Route::post('attendances/{user:uid}', [AttendanceController::class, 'check']);
+        Route::post('attendances/submit', [AttendanceController::class, 'submit']);
     });
 });

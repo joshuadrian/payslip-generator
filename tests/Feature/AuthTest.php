@@ -54,7 +54,7 @@ test('successfully authenticated', function () {
     $user = User::factory()->create();
     $response = $this->postJson('/api/v1/auth', [
         'username' => $user->username,
-        'password' => 'password'
+        'password' => 'string'
     ]);
 
     $response->assertStatus(200);

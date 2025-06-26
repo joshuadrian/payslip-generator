@@ -6,10 +6,12 @@ use App\Traits\Models\GeneratesUid;
 use App\Traits\Models\TrackUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Attendance extends Model
 {
-    use SoftDeletes, GeneratesUid, TrackUser;
+    use SoftDeletes, GeneratesUid, TrackUser, LogsActivity;
 
     protected $fillable = ['user_id', 'date', 'attendance_period_id', 'checked_out_at'];
 
@@ -27,5 +29,10 @@ class Attendance extends Model
             'checked_in_at' => 'datetime',
             'checked_out_at' => 'datetime',
         ];
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logAll()->logOnlyDirty();
     }
 }

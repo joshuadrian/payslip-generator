@@ -12,9 +12,7 @@ test('fail on accept json only middleware', function () {
     $token = $user->createToken('api-token')->plainTextToken;
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
-    ])->post("/api/v1/attendances/$user->uid", [
-        'wrong' => 'wrong',
-    ]);
+    ])->post("/api/v1/attendances/submit");
 
     $response->assertStatus(406);
 });
@@ -22,7 +20,7 @@ test('fail on accept json only middleware', function () {
 test('fail to authenticate because no authorization header', function () {
     $user = User::factory()->create();
     $token = $user->createToken('api-token')->plainTextToken;
-    $response = $this->postJson("/api/v1/attendances/$user->uid");
+    $response = $this->postJson("/api/v1/attendances/submit");
 
     $response->assertStatus(401);
 });
@@ -31,10 +29,8 @@ test('fail on user not found', function () {
     $user = User::factory()->create();
     $token = $user->createToken('api-token')->plainTextToken;
     $response = $this->withHeaders([
-        'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/attendances/wrong", [
-        'wrong' => 'wrong',
-    ]);
+        'Authorization' => "Bearer wrong"
+    ])->postJson("/api/v1/attendances/wrong");
 
     $response->assertStatus(404);
 });
@@ -46,7 +42,7 @@ test('fail on missing attendance period existence', function () {
 
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/attendances/$user->uid");
+    ])->postJson("/api/v1/attendances/submit");
 
     $response->assertJson(['message' => "Attendance period doesn't exists for today"]);
     $response->assertStatus(422);
@@ -65,9 +61,7 @@ test('fail on checking in or out on weekends', function () {
 
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/attendances/$user->uid", [
-        'user_uid' => $user->uid,
-    ]);
+    ])->postJson("/api/v1/attendances/submit");
 
     $response->assertJson(['message' => 'Check in or check out cannot be done in weekends']);
     $response->assertStatus(422);
@@ -86,7 +80,7 @@ test('successfully checked in', function () {
 
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/attendances/$user->uid");
+    ])->postJson("/api/v1/attendances/submit");
 
     $response->assertStatus(200);
 });
@@ -104,7 +98,7 @@ test('successfully checked out', function () {
 
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/attendances/$user->uid");
+    ])->postJson("/api/v1/attendances/submit");
 
     $response->assertStatus(200);
 
@@ -112,7 +106,7 @@ test('successfully checked out', function () {
 
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/attendances/$user->uid");
+    ])->postJson("/api/v1/attendances/submit");
 
     $response->assertStatus(200);
 });

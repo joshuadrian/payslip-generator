@@ -12,6 +12,7 @@ use App\Services\AttendanceService;
 use App\Traits\ApiResponse;
 use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
@@ -20,13 +21,13 @@ class AttendanceController extends Controller
 {
     use ApiResponse;
     /**
-     * Store check-in or check-out attendance of the specified user
+     * Submit attendance check-in or check-out of the specified user
      */
-    public function check(Request $request, User $user, AttendanceService $service)
+    public function submit(Request $request, AttendanceService $service)
     {
         try {
             $date = now()->startOfDay();
-            $att = $service->checkInOrOut($user, $date);
+            $att = $service->checkInOrOut(Auth::user(), $date);
             /**
              * Success
              *
