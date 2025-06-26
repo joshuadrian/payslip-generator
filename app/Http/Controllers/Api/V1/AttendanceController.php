@@ -6,9 +6,7 @@ use App\Exceptions\AttendanceCheckedOutException;
 use App\Exceptions\AttendancePeriodNotFoundException;
 use App\Exceptions\CheckInOrOutOnWeekendsException;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Services\AttendanceService;
-// use App\Services\AttendanceService;
 use App\Traits\ApiResponse;
 use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Request;
@@ -26,14 +24,13 @@ class AttendanceController extends Controller
     public function submit(Request $request, AttendanceService $service)
     {
         try {
-            $date = now()->startOfDay();
-            $att = $service->checkInOrOut(Auth::user(), $date);
+            $att = $service->checkInOrOut(Auth::user());
             /**
              * Success
              *
              * @body array{
              *      status:'success',
-             *      message: 'Successfully checked in for <date>',
+             *      message: 'Successfully checked in for today',
              *      data: array<Attendance>
              *  }
              */

@@ -8,12 +8,12 @@ use App\Exceptions\CheckInOrOutOnWeekendsException;
 use App\Models\Attendance;
 use App\Models\AttendancePeriod;
 use App\Models\User;
-use Illuminate\Support\Carbon;
 
 class AttendanceService
 {
-    public function checkInOrOut(User $user, Carbon $date)
+    public function checkInOrOut(User $user)
     {
+        $date = now()->startOfDay();
         $formattedDate = $date->format('Y-m-d');
 
         if ($date->isWeekend()) {
