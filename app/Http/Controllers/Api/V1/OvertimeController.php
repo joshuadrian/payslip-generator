@@ -23,7 +23,7 @@ class OvertimeController extends Controller
             // @var int
             'duration_hours' => "required|numeric|max:$maxDuration|min:0.01"
         ]);
-        $ovt = $service->submitOvertime(Auth::user(), $request->duration_hours);
+        $ovt = $service->store(Auth::user(), $request);
 
         /**
          * Success

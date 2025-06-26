@@ -7,11 +7,11 @@ use App\Exceptions\OvertimeSubmittedException;
 use App\Models\Overtime;
 use App\Models\Setting;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class OvertimeService
 {
-    public function submitOvertime(User $user, float $duration)
+    public function store(User $user, Request $request)
     {
         $date = now()->startOfDay();
         $shiftEnd = Setting::where('name', 'shift_end')->first()->value ?? '17:00';
@@ -31,7 +31,7 @@ class OvertimeService
         $ovt = Overtime::create([
             'user_id' => $user->id,
             'date' => $formattedDate,
-            'duration_hours' => $duration
+            'duration_hours' => $request->duration_hours
         ])->refresh();
 
         return $ovt;
