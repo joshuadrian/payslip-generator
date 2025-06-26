@@ -4,8 +4,8 @@ use App\Http\Controllers\Api\V1\AttendancePeriodController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\AttendanceController;
 use App\Http\Controllers\Api\V1\OvertimeController;
+use App\Http\Controllers\Api\V1\ReimbursementController;
 use App\Http\Controllers\Api\V1\UserController;
-use App\Http\Controllers\ReimbursementController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function () {
@@ -24,6 +24,6 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             ->post('overtimes', [OvertimeController::class, 'store']);
 
         Route::middleware('can:create reimbursement')
-        ->post('reimbursements', [ReimbursementController::class, 'store']);
+            ->post('reimbursements', [ReimbursementController::class, 'store']);
     });
 });

@@ -19,8 +19,8 @@ test('fail on missing attendance period existence', function () {
         'Authorization' => "Bearer $token"
     ])->postJson("/api/v1/attendances/submit");
 
-    $response->assertJson(['message' => "Attendance period doesn't exists for today."]);
-    $response->assertStatus(409);
+    $response->assertStatus(409)
+        ->assertJson(['message' => "Attendance period doesn't exists for today."]);
 });
 
 test('fail on checking in on weekends', function () {
@@ -38,8 +38,8 @@ test('fail on checking in on weekends', function () {
         'Authorization' => "Bearer $token"
     ])->postJson("/api/v1/attendances/submit");
 
-    $response->assertJson(['message' => 'Check in or check out cannot be done in weekends.']);
-    $response->assertStatus(422);
+    $response->assertStatus(422)
+        ->assertJson(['message' => 'Check in or check out cannot be done in weekends.']);
 });
 
 test('successfully checked in', function () {

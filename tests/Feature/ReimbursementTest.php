@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use Carbon\Carbon;
 use Database\Seeders\RolePermissionSeeder;
 use Database\Seeders\SettingSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,55 +11,59 @@ beforeEach(function () {
     $this->seed(SettingSeeder::class);
 });
 
-test('fail on validation when required fields are missing', function () {
+test('fail on validation when amount is missing', function () {
     $user = User::factory()->employee()->create();
     $token = $user->createToken('api-token')->plainTextToken;
+
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/overtimes", [
-        'wrong' => 3
+    ])->postJson('/api/v1/reimbursements', [
+        'description' => 'Lunch with client'
     ]);
 
     $response->assertStatus(422)
-        ->assertJson(['errors' => ['duration_hours' => ['The duration hours field is required.']]]);
+        ->assertJson(['errors' => ['amount' => ['The amount field is required.']]]);
 });
 
-test('fail on validation when duration is under the requirements', function () {
-    Carbon::setTestNow(now()->startOfDay()->setHour(17));
+test('fail on validation when amount is not decimal', function () {
     $user = User::factory()->employee()->create();
     $token = $user->createToken('api-token')->plainTextToken;
+
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/overtimes", [
-        'duration_hours' => 0
+    ])->postJson('/api/v1/reimbursements', [
+        'amount' => 'invalid_amount',
+        'description' => 'Taxi to office'
     ]);
 
     $response->assertStatus(422)
-        ->assertJson(['errors' => ['duration_hours' => ['The duration hours field must be at least 0.01.']]]);
+        ->assertJson(['errors' => ['amount' => ['The amount field must have 0-2 decimal places.']]]);
 });
 
-test('fail on validation when duration is above the requirements', function () {
-    Carbon::setTestNow(now()->startOfDay()->setHour(17));
+test('fail on validation when description is not a string', function () {
     $user = User::factory()->employee()->create();
     $token = $user->createToken('api-token')->plainTextToken;
+
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/overtimes", [
-        'duration_hours' => 3.1
+    ])->postJson('/api/v1/reimbursements', [
+        'amount' => 50.25,
+        'description' => ['unexpected', 'array']
     ]);
 
     $response->assertStatus(422)
-        ->assertJson(['errors' => ['duration_hours' => ['The duration hours field must not be greater than 3.']]]);
+        ->assertJson(['errors' => ['description' => ['The description field must be a string.']]]);
 });
 
-test('successfully submitted overtime', function () {
-    Carbon::setTestNow(now()->startOfDay()->setHour(17));
+test('successfully submits reimbursement', function () {
     $user = User::factory()->employee()->create();
     $token = $user->createToken('api-token')->plainTextToken;
+
     $response = $this->withHeaders([
         'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/overtimes", [
-        'duration_hours' => 2
+    ])->postJson('/api/v1/reimbursements', [
+        'amount' => 125.50,
+        'description' => 'Hotel for business trip'
     ]);
 
     $response->assertStatus(201);
