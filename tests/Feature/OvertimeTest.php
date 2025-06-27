@@ -10,14 +10,13 @@ uses(RefreshDatabase::class);
 beforeEach(function () {
     $this->seed(RolePermissionSeeder::class);
     $this->seed(SettingSeeder::class);
+
+    $user = User::factory()->employee()->create();
+    $this->actingAs($user, 'sanctum');
 });
 
 test('fail on validation when required fields are missing', function () {
-    $user = User::factory()->employee()->create();
-    $token = $user->createToken('api-token')->plainTextToken;
-    $response = $this->withHeaders([
-        'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/overtimes", [
+    $response = $this->postJson("/api/v1/overtimes", [
         'wrong' => 3
     ]);
 
@@ -27,11 +26,7 @@ test('fail on validation when required fields are missing', function () {
 
 test('fail on validation when duration is under the requirements', function () {
     Carbon::setTestNow(now()->startOfDay()->setHour(17));
-    $user = User::factory()->employee()->create();
-    $token = $user->createToken('api-token')->plainTextToken;
-    $response = $this->withHeaders([
-        'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/overtimes", [
+    $response = $this->postJson("/api/v1/overtimes", [
         'duration_hours' => 0
     ]);
 
@@ -41,11 +36,7 @@ test('fail on validation when duration is under the requirements', function () {
 
 test('fail on validation when duration is above the requirements', function () {
     Carbon::setTestNow(now()->startOfDay()->setHour(17));
-    $user = User::factory()->employee()->create();
-    $token = $user->createToken('api-token')->plainTextToken;
-    $response = $this->withHeaders([
-        'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/overtimes", [
+    $response = $this->postJson("/api/v1/overtimes", [
         'duration_hours' => 3.1
     ]);
 
@@ -55,11 +46,7 @@ test('fail on validation when duration is above the requirements', function () {
 
 test('successfully submitted overtime', function () {
     Carbon::setTestNow(now()->startOfDay()->setHour(17));
-    $user = User::factory()->employee()->create();
-    $token = $user->createToken('api-token')->plainTextToken;
-    $response = $this->withHeaders([
-        'Authorization' => "Bearer $token"
-    ])->postJson("/api/v1/overtimes", [
+    $response = $this->postJson("/api/v1/overtimes", [
         'duration_hours' => 2
     ]);
 

@@ -9,15 +9,13 @@ uses(RefreshDatabase::class);
 beforeEach(function () {
     $this->seed(RolePermissionSeeder::class);
     $this->seed(SettingSeeder::class);
+
+    $user = User::factory()->employee()->create();
+    $this->actingAs($user, 'sanctum');
 });
 
 test('fail on validation when amount is missing', function () {
-    $user = User::factory()->employee()->create();
-    $token = $user->createToken('api-token')->plainTextToken;
-
-    $response = $this->withHeaders([
-        'Authorization' => "Bearer $token"
-    ])->postJson('/api/v1/reimbursements', [
+    $response = $this->postJson('/api/v1/reimbursements', [
         'description' => 'Lunch with client'
     ]);
 
@@ -26,12 +24,7 @@ test('fail on validation when amount is missing', function () {
 });
 
 test('fail on validation when amount is not decimal', function () {
-    $user = User::factory()->employee()->create();
-    $token = $user->createToken('api-token')->plainTextToken;
-
-    $response = $this->withHeaders([
-        'Authorization' => "Bearer $token"
-    ])->postJson('/api/v1/reimbursements', [
+    $response = $this->postJson('/api/v1/reimbursements', [
         'amount' => 'invalid_amount',
         'description' => 'Taxi to office'
     ]);
@@ -41,12 +34,7 @@ test('fail on validation when amount is not decimal', function () {
 });
 
 test('fail on validation when description is not a string', function () {
-    $user = User::factory()->employee()->create();
-    $token = $user->createToken('api-token')->plainTextToken;
-
-    $response = $this->withHeaders([
-        'Authorization' => "Bearer $token"
-    ])->postJson('/api/v1/reimbursements', [
+    $response = $this->postJson('/api/v1/reimbursements', [
         'amount' => 50.25,
         'description' => ['unexpected', 'array']
     ]);
@@ -56,12 +44,7 @@ test('fail on validation when description is not a string', function () {
 });
 
 test('successfully submits reimbursement', function () {
-    $user = User::factory()->employee()->create();
-    $token = $user->createToken('api-token')->plainTextToken;
-
-    $response = $this->withHeaders([
-        'Authorization' => "Bearer $token"
-    ])->postJson('/api/v1/reimbursements', [
+    $response = $this->postJson('/api/v1/reimbursements', [
         'amount' => 125.50,
         'description' => 'Hotel for business trip'
     ]);
