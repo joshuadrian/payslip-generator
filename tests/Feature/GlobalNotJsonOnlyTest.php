@@ -29,3 +29,18 @@ test('fail on reimbursements routes', function () {
     $response = $this->post("/api/v1/reimbursements");
     $response->assertStatus(406);
 });
+
+test('fail on payrolls index routes', function () {
+    $response = $this->get("/api/v1/payrolls");
+    $response->assertStatus(406);
+});
+
+test('fail on payrolls show routes', function () {
+    $response = $this->get("/api/v1/payrolls/wrong");
+    $response->assertStatus(406);
+});
+
+test('fail on payrolls store routes', function () {
+    $response = $this->post("/api/v1/payrolls/run/wrong");
+    $response->assertStatus(406);
+});
