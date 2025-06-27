@@ -18,7 +18,7 @@ class ReimbursementController extends Controller
     public function store(Request $request, ReimbursementService $service)
     {
         $request->validate([
-            'amount' => 'required|decimal:0,2',
+            'amount' => 'required|decimal:0,2|min:0.01',
             'description' => 'string',
         ]);
 
