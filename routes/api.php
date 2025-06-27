@@ -55,5 +55,8 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
         Route::middleware('can:view specified payslip')
             ->get('payslips/generate', [PayslipController::class, 'generate']);
+
+        // Route::middleware('can:create payslip summary on specified payroll')
+        Route::get('payslips/generate/{payroll:uid}', [PayslipController::class, 'generateSummary']);
     });
 });
