@@ -15,7 +15,6 @@ use Illuminate\Http\Request;
 #[Group('Attendance Period')]
 class AttendancePeriodController extends Controller
 {
-    use ApiResponse;
     /**
      * Create attendance period
      */

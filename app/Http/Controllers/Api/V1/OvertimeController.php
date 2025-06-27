@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class OvertimeController extends Controller
 {
-    use ApiResponse;
-
     /**
      * Create overtime
      */

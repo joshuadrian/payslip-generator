@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 #[Group('Attendance')]
 class AttendanceController extends Controller
 {
-    use ApiResponse;
     /**
      * Submit check-in or check-out
      */

@@ -10,8 +10,6 @@ use App\Services\ReimbursementService;
 
 class ReimbursementController extends Controller
 {
-    use ApiResponse;
-
     /**
      * Create reimbursement
      */
