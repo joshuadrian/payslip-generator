@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Api\V1;
 
+use App\Http\Resources\Api\V1\PayrollResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -24,8 +25,11 @@ class PayslipResource extends JsonResource
             'overtime_bonus' => $this->overtime_bonus,
             'total_reimbursement' => $this->total_reimbursement,
             'take_home_pay' => $this->take_home_pay,
-            "created_at" => $this->created_at,
-            "updated_at" => $this->updated_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+
+            'user' => UserResource::make($this->whenLoaded('user')),
+            'payroll' => PayrollResource::make($this->whenLoaded('payroll'))
         ];
     }
 }

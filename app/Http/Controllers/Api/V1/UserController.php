@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Traits\ApiResponse;
+use App\Http\Controllers\Controller;
 use Dedoc\Scramble\Attributes\Group;
+use App\Http\Resources\Api\V1\UserResource;
 
 #[Group('Users')]
 class UserController extends Controller
@@ -18,6 +19,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return $this->success('Fetched all users.', User::limit(5)->get(), 200);
+        return UserResource::collection(User::limit(5)->get())->additional([
+            'status' => 'success',
+            'message' => 'Fetched all users.'
+        ])->response()->setStatusCode(200);
     }
 }

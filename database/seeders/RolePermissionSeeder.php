@@ -25,6 +25,7 @@ class RolePermissionSeeder extends Seeder
             ['name' => 'view payrolls'],
             ['name' => 'create payroll'],
 
+            ['name' => 'view specified payslip'],
             ['name' => 'create payslip'],
 
             ['name' => 'create payslip summary'],
@@ -46,6 +47,7 @@ class RolePermissionSeeder extends Seeder
                     'create attendance',
                     'create overtime',
                     'create reimbursement',
+                    'view specified payslip',
                     'create payslip',
                 ]
             ],

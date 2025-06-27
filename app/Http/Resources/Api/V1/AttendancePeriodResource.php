@@ -20,8 +20,8 @@ class AttendancePeriodResource extends JsonResource
             "start_date" => $this->start_date,
             "end_date" => $this->end_date,
             "is_locked" => $this->is_locked,
-            "created_at" => $this->created_at,
-            "updated_at" => $this->updated_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
