@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
 class CheckInOrOutOnWeekendsException extends MyException
 {
 

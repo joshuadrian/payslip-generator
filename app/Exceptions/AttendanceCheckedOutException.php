@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
 class AttendanceCheckedOutException extends MyException
 {
 
