@@ -47,22 +47,12 @@ class DatabaseSeeder extends Seeder
 
     public static function addAttendances(Collection $users, CarbonPeriod $periods)
     {
-        User::factory(1)
-            ->admin()
-            ->create();
-
-        $users = User::factory(100)
-            ->hasSalaries(1)
-            ->employee()
-            ->create();
-
         foreach ($periods as $value) {
             $dateStr = $value->format('Y-m-d');
             $checkInAt = Carbon::parse($dateStr)->setHour(9);
             $checkOutAt = Carbon::parse($dateStr)->setHour(17);
             foreach ($users as $user) {
                 $user->attendances()->create([
-                    'user_id' => '',
                     'date' => $dateStr,
                     'attendance_period_id' => 1,
                     'checked_in_at' => $checkInAt,
