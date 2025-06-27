@@ -2,28 +2,23 @@
 
 namespace App\Models;
 
+use App\Traits\Models\DefaultLog;
 use App\Traits\Models\GeneratesUid;
 use App\Traits\Models\TrackUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Reimbursement extends Model
 {
-    use SoftDeletes, LogsActivity, GeneratesUid, TrackUser;
+    use SoftDeletes, LogsActivity, DefaultLog, GeneratesUid, TrackUser;
 
     protected $guarded = ['id', 'uid', 'created_by', 'updated_by', 'deleted_by'];
 
     protected function casts(): array
     {
         return ['date' => 'date'];
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()->logAll()->logOnlyDirty();
     }
 
     public function user(): BelongsTo
