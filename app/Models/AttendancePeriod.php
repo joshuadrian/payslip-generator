@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-#[ScopedBy(UnlockedScope::class)]
+// #[ScopedBy(UnlockedScope::class)]
 class AttendancePeriod extends Model
 {
     use SoftDeletes, LogsActivity, DefaultLog, GeneratesUid, TrackUser;
@@ -28,8 +28,13 @@ class AttendancePeriod extends Model
         ];
     }
 
-    public function scopeWithLocked(Builder $query)
+    public function scopeUnlocked(Builder $query)
     {
-        $query->withoutGlobalScope(UnlockedScope::class);
+        $query->where('is_locked', false);
     }
+
+    // public function scopeWithLocked(Builder $query)
+    // {
+    //     $query->withoutGlobalScope(UnlockedScope::class);
+    // }
 }

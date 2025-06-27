@@ -18,8 +18,6 @@ class JsonOnlyMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->isMethod('post')) return $next($request);
-
         $acceptHeader = $request->header('Accept');
         if ($acceptHeader !== 'application/json') {
             return $this->error('Accept header must be application/json', [], 406);

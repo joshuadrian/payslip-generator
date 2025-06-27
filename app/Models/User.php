@@ -7,8 +7,10 @@ namespace App\Models;
 use App\Traits\Models\DefaultLog;
 use App\Traits\Models\GeneratesUid;
 use App\Traits\Models\TrackUser;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -61,6 +63,11 @@ class User extends Authenticatable
         return $this->hasMany(Salary::class);
     }
 
+    public function latestSalary(): HasOne
+    {
+        return $this->hasOne(Salary::class)->latestOfMany('effective_date');
+    }
+
     public function attendances(): HasMany
     {
         return $this->hasMany(Attendance::class);
@@ -74,5 +81,20 @@ class User extends Authenticatable
     public function overtimes(): HasMany
     {
         return $this->hasMany(Overtime::class);
+    }
+
+    public function payslips(): HasMany
+    {
+        return $this->hasMany(Payslip::class);
+    }
+
+    public function scopeEmployee(Builder $query)
+    {
+        return $query->role('Employee');
+    }
+
+    public function scopeAdmin(Builder $query)
+    {
+        return $query->role('Admin');
     }
 }
