@@ -51,13 +51,16 @@ class DatabaseSeeder extends Seeder
             $dateStr = $date->format('Y-m-d');
             $checkInAt = Carbon::parse($dateStr)->setHour(9);
             $checkOutAt = Carbon::parse($dateStr)->setHour(17);
+            $haveAbsences = rand(0, 1);
             foreach ($users as $user) {
-                $user->attendances()->create([
-                    'date' => $dateStr,
-                    'attendance_period_id' => 1,
-                    'checked_in_at' => $checkInAt,
-                    'checked_out_at' => $checkOutAt
-                ]);
+                if (rand(0, 1) === 1 || !$haveAbsences) {
+                    $user->attendances()->create([
+                        'date' => $dateStr,
+                        'attendance_period_id' => 1,
+                        'checked_in_at' => $checkInAt,
+                        'checked_out_at' => $checkOutAt
+                    ]);
+                }
             }
         }
     }

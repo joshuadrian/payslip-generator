@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('total_reimbursement', 15, 2)->default(0);
             $table->decimal('total_overtime_hours', 6, 2);
             $table->decimal('overtime_bonus', 15, 2)->default(0);
+            $table->integer('total_absences')->default(0);
             $table->decimal('absence_deduction', 15, 2)->default(0);
             $table->decimal('take_home_pay', 15, 2);
             $table->foreignId('created_by')->nullable()->constrained('users');

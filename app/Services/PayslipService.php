@@ -47,8 +47,8 @@ class PayslipService
             'total_reimbursement' => $totalReimbursement,
             'total_overtime_hours' => $totalOvertime,
             'overtime_bonus' => $overtimeBonus,
+            'total_absences' => $totalAbsence,
             'absence_deduction' => $absenceDeduction,
-            'total_absence' => $totalAbsence,
             'take_home_pay' => $takeHomePay,
         ]);
 
