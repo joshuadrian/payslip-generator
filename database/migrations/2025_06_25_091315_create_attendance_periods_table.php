@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('attendance_periods', function (Blueprint $table) {
             $table->id();
-            $table->string('uid')->unique();
+            $table->string('uid', 7)->unique();
             $table->date('start_date');
             $table->date('end_date');
             $table->boolean('is_locked')->default(false);

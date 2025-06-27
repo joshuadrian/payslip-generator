@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->string('uid')->unique();
+            $table->string('uid', 7)->unique();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('attendance_period_id')->constrained();
             $table->date('date');

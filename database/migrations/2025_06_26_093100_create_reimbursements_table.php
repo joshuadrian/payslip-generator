@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('reimbursements', function (Blueprint $table) {
             $table->id();
-            $table->string('uid')->unique();
+            $table->string('uid', 7)->unique();
             $table->foreignId('user_id')->constrained();
             $table->date('date');
             $table->decimal('amount', 15, 2);
