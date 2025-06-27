@@ -28,6 +28,8 @@ class PayrollService
 
             $employeesChunk = User::employee()->with([
                 'latestSalary',
+                'totalReimbursement',
+                'totalOvertime',
                 'attendances' => fn($q) => $q->whereBetween('date', [
                     $period->start_date,
                     $period->end_date
@@ -37,19 +39,27 @@ class PayrollService
             $jobs = [];
 
             foreach ($employeesChunk as $employees) {
-                $jobs[] = new ProcessPayrollChunk($employees);
+                $jobs[] = new ProcessPayrollChunk($payroll, $employees, $period);
             }
 
             Bus::batch($jobs)
-                ->before(function (Batch $batch) {
-                    logger('Batch ID: ' . $batch->id);
+
+                ->before(function (Batch $batch) use ($payroll) {
+                    logger('Processing payroll. Batch ID: ' . $batch->id);
+                    $payroll->update(['message' => 'Processing payroll.']);
                 })
-                ->then(function (Batch $batch) {
+
+                ->then(function (Batch $batch) use ($payroll) {
                     logger('All chunks processed');
+                    $payroll->update(['is_ready' => true, 'message' => 'Payroll is ready.']);
                 })
-                ->catch(function (Batch $batch, \Throwable $e) {
-                    logger('Chunk processing failed: ' . $e->getMessage());
+
+                ->catch(function (Batch $batch, \Throwable $e) use ($period, $payroll) {
+                    logger()->error('Chunk processing failed.');
+                    $period->update(['is_locked' => false]);
+                    $payroll->update(['message' => 'Failed to process payroll. Batch ID: ' . $batch->id]);
                 })
+
                 ->dispatch();
 
             return $payroll;

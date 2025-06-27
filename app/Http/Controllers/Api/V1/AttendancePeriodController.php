@@ -12,9 +12,21 @@ use Carbon\Carbon;
 use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Request;
 
-#[Group('Attendance Period')]
+#[Group('Attendance Periods')]
 class AttendancePeriodController extends Controller
 {
+    /**
+     * List all attendance periods (for testing)
+     */
+    public function index(Request $request)
+    {
+        return AttendancePeriodResource::collection(AttendancePeriod::all())
+            ->additional([
+                'status' => 'success',
+                'message' => 'Fetched all attendance periods.'
+            ])->response()->setStatusCode(201);
+    }
+
     /**
      * Create attendance period
      */

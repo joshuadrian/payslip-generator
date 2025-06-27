@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\AttendancePeriod;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Api\V1\PayrollResource;
 use App\Models\Payroll;
-use App\Services\PayrollService;
 use Illuminate\Http\Request;
+use App\Models\AttendancePeriod;
+use App\Services\PayrollService;
+use App\Http\Controllers\Controller;
+use Dedoc\Scramble\Attributes\Group;
+use App\Http\Resources\Api\V1\PayrollResource;
 
+#[Group('Payrolls')]
 class PayrollController extends Controller
 {
     /**

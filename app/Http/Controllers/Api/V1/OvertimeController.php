@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Api\V1\OvertimeResource;
 use App\Models\Setting;
-use App\Services\OvertimeService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use App\Services\OvertimeService;
+use App\Http\Controllers\Controller;
+use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Resources\Api\V1\OvertimeResource;
+#[Group('Overtimes')]
 class OvertimeController extends Controller
 {
     /**

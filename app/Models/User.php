@@ -78,9 +78,23 @@ class User extends Authenticatable
         return $this->hasMany(Reimbursement::class);
     }
 
+    public function totalReimbursement(): HasOne
+    {
+        return $this->hasOne(Reimbursement::class)
+            ->selectRaw('user_id, sum(amount) as total')
+            ->groupBy('user_id');
+    }
+
     public function overtimes(): HasMany
     {
         return $this->hasMany(Overtime::class);
+    }
+
+    public function totalOvertime(): HasOne
+    {
+        return $this->hasOne(Overtime::class)
+            ->selectRaw('user_id, sum(duration_hours) as total')
+            ->groupBy('user_id');
     }
 
     public function payslips(): HasMany

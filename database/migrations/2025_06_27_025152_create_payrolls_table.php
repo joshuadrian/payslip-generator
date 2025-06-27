@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('uid', 7)->unique();
             $table->foreignId('attendance_period_id')->constrained()->unique();
+            $table->boolean('is_ready')->default(false);
+            $table->text('message')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->foreignId('deleted_by')->nullable()->constrained('users');

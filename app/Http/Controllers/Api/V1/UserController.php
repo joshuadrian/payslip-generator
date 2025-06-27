@@ -7,17 +7,17 @@ use App\Models\User;
 use App\Traits\ApiResponse;
 use Dedoc\Scramble\Attributes\Group;
 
-#[Group('User (Testing purpose only)')]
+#[Group('Users')]
 class UserController extends Controller
 {
     use ApiResponse;
 
     /**
-     * Get 5 users data
+     * Get 5 users data (for testing)
      * @unauthenticated
      */
     public function index()
     {
-        return $this->success('Successfully fetched users data.', User::limit(5)->get(), 200);
+        return $this->success('Fetched all users.', User::limit(5)->get(), 200);
     }
 }

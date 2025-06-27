@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
             ->employee()
             ->create();
 
-        $periods = CarbonPeriod::create(now()->startOfMonth(), now()->endOfMonth());
+        $periods = CarbonPeriod::create(now()->startOfMonth(), now()->endOfMonth())->filter(fn($date) => !$date->isWeekend());
 
         static::addAttendances($users, $periods);
         static::addReimbursementsAndOvertimes($users->take(5), $periods);
@@ -47,8 +47,8 @@ class DatabaseSeeder extends Seeder
 
     public static function addAttendances(Collection $users, CarbonPeriod $periods)
     {
-        foreach ($periods as $value) {
-            $dateStr = $value->format('Y-m-d');
+        foreach ($periods as $date) {
+            $dateStr = $date->format('Y-m-d');
             $checkInAt = Carbon::parse($dateStr)->setHour(9);
             $checkOutAt = Carbon::parse($dateStr)->setHour(17);
             foreach ($users as $user) {
@@ -64,8 +64,8 @@ class DatabaseSeeder extends Seeder
 
     public static function addReimbursementsAndOvertimes(Collection $users, CarbonPeriod $periods)
     {
-        foreach ($periods as $value) {
-            $dateStr = $value->format('Y-m-d');
+        foreach ($periods as $date) {
+            $dateStr = $date->format('Y-m-d');
 
             foreach ($users as $user) {
                 for ($i = 0; $i < rand(0, 3); $i++) {

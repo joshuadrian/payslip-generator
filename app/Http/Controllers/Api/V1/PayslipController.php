@@ -7,5 +7,8 @@ use App\Http\Controllers\Controller;
 
 class PayslipController extends Controller
 {
-    //
+    public function index()
+    {
+        //
+    }
 }

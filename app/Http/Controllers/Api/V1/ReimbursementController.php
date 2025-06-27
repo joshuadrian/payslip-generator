@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api\V1;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Api\V1\ReimbursementResource;
+use Dedoc\Scramble\Attributes\Group;
 use App\Services\ReimbursementService;
+use App\Http\Resources\Api\V1\ReimbursementResource;
 
+#[Group('Reimbursements')]
 class ReimbursementController extends Controller
 {
     /**
