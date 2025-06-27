@@ -19,7 +19,7 @@ class SalaryFactory extends Factory
         $date = fake()->dateTimeBetween('2024-01-01 00:00:00', '2024-01-31 00:00:00');
 
         return [
-            'monthly_salary' => rand(1, 100) * 1000000,
+            'amount' => rand(1, 100) * 1000000,
             'effective_date' => $date,
         ];
     }

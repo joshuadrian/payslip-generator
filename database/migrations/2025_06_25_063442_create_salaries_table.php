@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('uid', 7)->unique();
             $table->foreignId('user_id')->constrained();
-            $table->decimal('monthly_salary', 15, 2);
+            $table->decimal('amount', 15, 2);
             $table->date('effective_date');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
