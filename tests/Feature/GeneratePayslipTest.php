@@ -12,7 +12,7 @@ beforeEach(function () {
     $this->actingAs($user, 'sanctum');
 });
 
-test('fail on generating other user\'s payslip', function () {
+test('successfully generated payslip', function () {
     $response = $this->getJson("/api/v1/payslips/generate");
-    $response->assertStatus(403);
+    $response->assertStatus(200);
 });

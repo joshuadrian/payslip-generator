@@ -17,7 +17,8 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
 
-        Route::get('attendance-periods', [AttendancePeriodController::class, 'index']);
+        Route::middleware('can:view attendance periods')
+            ->get('attendance-periods', [AttendancePeriodController::class, 'index']);
 
         Route::middleware('can:create attendance period')
             ->post('attendance-periods', [AttendancePeriodController::class, 'store']);

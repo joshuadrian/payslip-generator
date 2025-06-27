@@ -7,10 +7,10 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('payslip:migrate {--fresh} {--seed} {--force}', function () {
-    $this->info('Refreshing database...');
-
+Artisan::command('payslip:migrate {--fresh} {--seed} {--data} {--force}', function () {
+    // Running migrations
     if ($this->option('fresh')) {
+
         Artisan::call('migrate:fresh', [
             '--force' => $this->option('force'),
         ]);
@@ -22,8 +22,10 @@ Artisan::command('payslip:migrate {--fresh} {--seed} {--force}', function () {
 
     $this->line(Artisan::output());
 
-    $this->info('Migration completed.');
 
+
+
+    // Running seeeders
     if ($this->option('seed')) {
         $this->info('Seeding database...');
 
@@ -32,7 +34,18 @@ Artisan::command('payslip:migrate {--fresh} {--seed} {--force}', function () {
         ]);
 
         $this->line(Artisan::output());
+    }
 
-        $this->info('Seeding completed.');
+
+    
+
+    // Running user data seeder
+    if ($this->option('data')) {
+        Artisan::call('db:seed', [
+            '--class' => 'UserDataSeeder',
+            '--force' => $this->option('force'),
+        ]);
+
+        $this->line(Artisan::output());
     }
 })->purpose('Run fresh migrations and optionally seed the database.');
