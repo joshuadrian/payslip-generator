@@ -98,3 +98,18 @@ test('fail on payrolls store route', function () {
 
     $response->assertStatus(401);
 });
+
+
+
+
+// Payslips
+test('fail on payslips route', function () {
+    $response = $this->getJson("/api/v1/payslips/generate");
+    $response->assertStatus(401);
+
+    $response = $this->withHeaders([
+        'Authorization' => "Bearer wrong"
+    ])->getJson("/api/v1/payslips/generate");
+
+    $response->assertStatus(401);
+});

@@ -75,3 +75,12 @@ test('fail on payrolls store route', function () {
 
     $response->assertStatus(403);
 });
+
+
+
+
+// Payslips
+test('fail on payslips route', function () {
+    $response = $this->getJson("/api/v1/payslips/generate");
+    $response->assertStatus(403);
+});
