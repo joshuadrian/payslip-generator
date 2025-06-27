@@ -25,7 +25,7 @@ class PayrollController extends Controller
     }
 
     /**
-     * Create payroll
+     * Run payroll for a period
      */
     public function run(AttendancePeriod $period, PayrollService $service)
     {
@@ -38,7 +38,7 @@ class PayrollController extends Controller
     }
 
     /**
-     * Show payroll
+     * View a specific payroll
      */
     public function show(Request $request, Payroll $payroll)
     {

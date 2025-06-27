@@ -13,7 +13,7 @@ use App\Http\Resources\Api\V1\ReimbursementResource;
 class ReimbursementController extends Controller
 {
     /**
-     * Create reimbursement
+     * Create a new reimbursement submission
      */
     public function store(Request $request, ReimbursementService $service)
     {

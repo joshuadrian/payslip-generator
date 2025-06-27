@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Exceptions\UniqueAttendancePeriodException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\V1\AttendancePeriodResource;
 use App\Models\AttendancePeriod;
 use App\Services\AttendancePeriodService;
-use App\Traits\ApiResponse;
-use Carbon\Carbon;
 use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Request;
 
@@ -28,7 +25,7 @@ class AttendancePeriodController extends Controller
     }
 
     /**
-     * Create attendance period
+     * Create a new attendance period
      */
     public function store(Request $request, AttendancePeriodService $service)
     {

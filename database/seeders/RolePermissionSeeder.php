@@ -14,6 +14,7 @@ class RolePermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
+            ['name' => 'view attendance periods'],
             ['name' => 'create attendance period'],
 
             ['name' => 'create attendance'],
@@ -24,10 +25,11 @@ class RolePermissionSeeder extends Seeder
 
             ['name' => 'view payrolls'],
             ['name' => 'create payroll'],
+            ['name' => 'generate specific payslip'],
 
-            ['name' => 'view specified payslip'],
+            ['name' => 'view specific payslip'],
             ['name' => 'create payslip'],
-            ['name' => 'create payslip summary on specified payroll'],
+            ['name' => 'generate payslip summary on specific payroll'],
 
         ];
 
@@ -35,10 +37,12 @@ class RolePermissionSeeder extends Seeder
             [
                 'role' => ['name' => 'Admin'],
                 'permissions' => [
+                    'view attendance periods',
                     'create attendance period',
                     'view payrolls',
                     'create payroll',
-                    'create payslip summary on specified payroll',
+                    'generate specific payslip',
+                    'generate payslip summary on specific payroll',
                 ]
             ],
             [
@@ -47,7 +51,7 @@ class RolePermissionSeeder extends Seeder
                     'create attendance',
                     'create overtime',
                     'create reimbursement',
-                    'view specified payslip',
+                    'view specific payslip',
                     'create payslip',
                 ]
             ],

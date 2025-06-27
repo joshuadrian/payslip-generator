@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 class PayslipController extends Controller
 {
     /**
-     * Generate payslip
+     * Generate a payslip
      */
     public function generate(Request $request)
     {
@@ -27,7 +27,7 @@ class PayslipController extends Controller
     }
 
     /**
-     * Generate payslip summary
+     * Generate a payslip summary
      */
     public function generateSummary(Request $request, Payroll $payroll)
     {

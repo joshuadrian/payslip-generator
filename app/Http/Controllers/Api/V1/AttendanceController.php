@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class AttendanceController extends Controller
 {
     /**
-     * Submit check-in or check-out
+     * Check in/out
      */
     public function submit(Request $request, AttendanceService $service)
     {

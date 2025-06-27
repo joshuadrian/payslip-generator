@@ -16,7 +16,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::post('/auth', [AuthController::class, 'authenticate']);
 
     Route::middleware('auth:sanctum')->group(function () {
+
         Route::get('attendance-periods', [AttendancePeriodController::class, 'index']);
+
         Route::middleware('can:create attendance period')
             ->post('attendance-periods', [AttendancePeriodController::class, 'store']);
 
@@ -40,23 +42,22 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
 
 
-
         Route::middleware('can:view payrolls')
             ->get('payrolls', [PayrollController::class, 'index']);
-
-        Route::middleware('can:view payrolls')
-            ->get('payrolls/{payroll:uid}', [PayrollController::class, 'show']);
 
         Route::middleware('can:create payroll')
             ->post('payrolls/run/{period:uid}', [PayrollController::class, 'run']);
 
+        Route::middleware('can:view specific payroll')
+            ->get('payrolls/{payroll:uid}', [PayrollController::class, 'show']);
 
 
 
-        Route::middleware('can:view specified payslip')
+
+        Route::middleware('can:generate specific payslip')
             ->get('payslips/generate', [PayslipController::class, 'generate']);
 
-        // Route::middleware('can:create payslip summary on specified payroll')
-        Route::get('payslips/generate/{payroll:uid}', [PayslipController::class, 'generateSummary']);
+        Route::middleware('can:generate payslip summary on specific payroll')
+            ->get('payslips/generate/{payroll:uid}', [PayslipController::class, 'generateSummary']);
     });
 });

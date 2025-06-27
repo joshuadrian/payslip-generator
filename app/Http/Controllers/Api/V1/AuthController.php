@@ -16,7 +16,7 @@ class AuthController extends Controller
     use ApiResponse;
 
     /**
-     * Get authorization token
+     * Get authentication token
      * @unauthenticated
      */
     public function authenticate(Request $request)

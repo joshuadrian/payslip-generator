@@ -14,5 +14,5 @@ beforeEach(function () {
 
 test('fail on generating other user\'s payslip', function () {
     $response = $this->getJson("/api/v1/payslips/generate");
-    $response->assertStatus(200);
+    $response->assertStatus(403);
 });

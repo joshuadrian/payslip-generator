@@ -14,7 +14,7 @@ use App\Http\Resources\Api\V1\OvertimeResource;
 class OvertimeController extends Controller
 {
     /**
-     * Create overtime
+     * Create a new overtime submission
      */
     public function store(Request $request, OvertimeService $service)
     {
