@@ -15,7 +15,7 @@ class Salary extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity, GeneratesUid, TrackUser;
 
-    protected $fillable = ['salary'];
+    protected $guarded = ['id', 'uid', 'created_by', 'updated_by', 'deleted_by'];
 
     protected function casts(): array
     {

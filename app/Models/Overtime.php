@@ -14,7 +14,7 @@ class Overtime extends Model
 {
     use SoftDeletes, LogsActivity, GeneratesUid, TrackUser;
 
-    protected $fillable = ['user_id', 'date', 'duration_hours'];
+    protected $guarded = ['id', 'uid', 'created_by', 'updated_by', 'deleted_by'];
 
     protected function casts(): array
     {

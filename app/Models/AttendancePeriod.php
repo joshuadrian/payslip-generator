@@ -17,7 +17,7 @@ class AttendancePeriod extends Model
 {
     use SoftDeletes, LogsActivity, GeneratesUid, TrackUser;
 
-    protected $fillable = ['start_date', 'end_date'];
+    protected $guarded = ['id', 'uid', 'created_by', 'updated_by', 'deleted_by'];
 
     protected function casts(): array
     {
